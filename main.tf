@@ -9,7 +9,7 @@ resource "aws_vpc" "default" {
     enable_dns_hostnames = true
     tags = {
         Name = "${var.vpc_name}"
-	    Owner = "Testuser"
+	    Owner = "Testuser-prod"
 	    environment = "${var.environment}"
     }
 }
@@ -115,7 +115,7 @@ resource "tls_private_key" "newkey" {
 }
 
 resource "aws_key_pair" "newkey" {
-  key_name      = "TerraformKey"
+  key_name      = "Terraform"
   public_key    = tls_private_key.newkey.public_key_openssh
 }
 
@@ -123,15 +123,15 @@ resource "aws_instance" "web-1" {
     #ami = var.imagename
     ami = "ami-0f403e3180720dd7e"
     #ami = "${data.aws_ami.my_ami.id}"
-    availability_zone = "us-east-1a"
+    availability_zone = "us-east-1b"
     instance_type = "t2.micro"
     key_name = aws_key_pair.newkey.key_name
     subnet_id = "${aws_subnet.subnet1-public.id}"
     vpc_security_group_ids = [aws_security_group.allow_all.id]
     associate_public_ip_address = true	
     tags = {
-        Name = "Server-1"
-        Env = "Dev"  
+        Name = "Server-2"
+        Env = "prod"  
     }  
 }
 # resource "null_resource" "nginx"{
